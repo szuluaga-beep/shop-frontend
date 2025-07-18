@@ -7,7 +7,7 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <HeroUIProvider>
-      <main className='dark text-foreground bg-background h-screen'>
+      <main>
 
         <App />
       </main>
