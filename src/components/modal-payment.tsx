@@ -16,7 +16,7 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                 Pay with credit card
                 <CreditCard className='text-2xl pointer-events-none shrink-0'/>
             </Button>
-            <Modal isOpen={isOpen} placement="top-center" onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} placement="bottom-center" onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -28,6 +28,7 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                                     endContent={
                                         <CreditCard className="text-2xl text-default-400 pointer-events-none shrink-0" />
                                     }
+                                    autoFocus
                                     labelPlacement='outside'
                                     label="Credit Card"
                                     placeholder="1234 5678 9012 3456"

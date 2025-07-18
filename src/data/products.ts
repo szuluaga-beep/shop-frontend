@@ -24,6 +24,14 @@ export const products = [
         price: Number(faker.commerce.price()),
         quantity: faker.number.int({ min: 1, max: 100 }),
         image: "/vite.svg"
+    },
+    {
+        id: 4,
+        name: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: Number(faker.commerce.price()),
+        quantity: faker.number.int({ min: 1, max: 100 }),
+        image: "/vite.svg"
     }
 
 ]
