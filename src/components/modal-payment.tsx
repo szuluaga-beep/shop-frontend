@@ -4,38 +4,8 @@ import { CreditCard, Package } from 'lucide-react';
 import { useState, type ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
-
-const cleanCardNumber = (value: string) => value.replace(/[\s-]/g, '');
-
-const formatCardNumber = (value: string) => {
-    // Remove all non-digit characters
-    const digits = value.replace(/\D/g, '');
-    // Format the digits into groups of 4
-    return digits.replace(/(.{4})/g, '$1 ').trim();
-}
-
-// Regular expressions for common credit card types
-const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/; // 13 or 16 digits, starts with 4
-const mastercardRegex = /^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$/; // 16 digits, starts with 51-55 or 2221-2720
-
-const schema = z.object({
-    creditCard: z.string()
-        .trim() // Remove leading/trailing whitespace
-        .transform(cleanCardNumber) // Remove internal spaces/dashes
-        .refine(val => {
-            // Check against multiple regexes
-            return visaRegex.test(val) ||
-                mastercardRegex.test(val)
-        }, {
-            message: 'Invalid credit card number format. Please enter a valid Visa or MasterCard number.'
-        }),
-
-    expireAt: z.string().nonempty('Expiration date is required'),
-    cvc: z.string()
-        .length(3, 'CVC must be exactly 3 digits'),
-    nameOfCard: z.string().min(1, 'Name on card is required'),
-    deliveryInfo: z.string().min(1, 'Delivery information is required'),
-});
+import { mastercardRegex, paymentSchema, visaRegex } from '../lib/schemas/payment';
+import { cleanCardNumber, formatCardNumber } from '../lib/utils';
 
 
 export const ModalPayment = ({ productId }: { productId: number }) => {
@@ -44,7 +14,7 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
     const [cardValue, setCardValue] = useState<string>('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
-        resolver: zodResolver(schema),
+        resolver: zodResolver(paymentSchema),
         defaultValues: {
             creditCard: '',
             deliveryInfo: '',
@@ -67,7 +37,7 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
     }
 
 
-    const onSubmit = (data: z.infer<typeof schema>) => {
+    const onSubmit = (data: z.infer<typeof paymentSchema>) => {
         console.log({
             productId,
             creditCard: data.creditCard,
