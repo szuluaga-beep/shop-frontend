@@ -1,5 +1,5 @@
 import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
-import { CreditCard, LockIcon, Package } from 'lucide-react';
+import { CreditCard, Package } from 'lucide-react';
 
 
 export const ModalPayment = ({ productId }: { productId: number }) => {
