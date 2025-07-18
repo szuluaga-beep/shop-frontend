@@ -16,7 +16,7 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                 Pay with credit card
                 <CreditCard className='text-2xl pointer-events-none shrink-0'/>
             </Button>
-            <Modal isOpen={isOpen} placement="bottom-center" onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} backdrop='opaque' placement="center" onOpenChange={onOpenChange}>
                 <ModalContent>
                     {(onClose) => (
                         <>
