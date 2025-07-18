@@ -1,10 +1,18 @@
-import { Button, Form, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
+import { Button, Form, Image, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CreditCard, Package } from 'lucide-react';
+import { useState, type ChangeEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 
 const cleanCardNumber = (value: string) => value.replace(/[\s-]/g, '');
+
+const formatCardNumber = (value: string) => {
+    // Remove all non-digit characters
+    const digits = value.replace(/\D/g, '');
+    // Format the digits into groups of 4
+    return digits.replace(/(.{4})/g, '$1 ').trim();
+}
 
 // Regular expressions for common credit card types
 const visaRegex = /^4[0-9]{12}(?:[0-9]{3})?$/; // 13 or 16 digits, starts with 4
@@ -22,7 +30,7 @@ const schema = z.object({
             message: 'Invalid credit card number format. Please enter a valid Visa or MasterCard number.'
         }),
 
-    expireAt: z.string(),
+    expireAt: z.string().nonempty('Expiration date is required'),
     cvc: z.string()
         .length(3, 'CVC must be exactly 3 digits'),
     nameOfCard: z.string().min(1, 'Name on card is required'),
@@ -32,6 +40,8 @@ const schema = z.object({
 
 export const ModalPayment = ({ productId }: { productId: number }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+    const [creditCardType, setCreditCardType] = useState<string>('');
+    const [cardValue, setCardValue] = useState<string>('');
 
     const { register, handleSubmit, formState: { errors } } = useForm({
         resolver: zodResolver(schema),
@@ -43,6 +53,19 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
             nameOfCard: '',
         },
     })
+
+    const handleCreditCardType = (e: ChangeEvent<HTMLInputElement>) => {
+        const value = e.target.value;
+
+        if (value.startsWith('4') || visaRegex.test(cleanCardNumber(value))) {
+            setCreditCardType('Visa');
+        } else if (value.startsWith('5') || mastercardRegex.test(cleanCardNumber(value))) {
+            setCreditCardType('MasterCard');
+        } else {
+            setCreditCardType('');
+        }
+    }
+
 
     const onSubmit = (data: z.infer<typeof schema>) => {
         console.log({
@@ -78,16 +101,36 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
 
                                     <Input
                                         endContent={
-                                            <CreditCard className="text-2xl text-default-400 pointer-events-none shrink-0" />
+                                            creditCardType === 'Visa' ? (
+                                                <Image
+                                                    src="/visa.svg"
+                                                    alt="Visa"
+                                                    className="w-6 h-6"
+                                                />
+                                            ) : creditCardType === 'MasterCard' ? (
+                                                <Image
+                                                    src="/mastercard.svg"
+                                                    alt="MasterCard"
+                                                    className="w-6 h-6"
+                                                />
+                                            ) : null
                                         }
                                         autoFocus
                                         {...register('creditCard')}
+                                        value={cardValue}
                                         errorMessage={errors.creditCard?.message}
                                         isInvalid={!!errors.creditCard}
                                         labelPlacement='outside'
                                         label="Credit Card"
                                         placeholder="1234 5678 9012 3456"
                                         variant="bordered"
+                                        onChange={(e) => {
+                                            handleCreditCardType(e);
+                                            const formatted = formatCardNumber(e.target.value);
+                                            e.target.value = formatted;
+                                            register('creditCard').onChange(e);
+                                            setCardValue(formatted);
+                                        }}
                                     />
                                     <div className='flex gap-4 w-full'>
                                         <Input
