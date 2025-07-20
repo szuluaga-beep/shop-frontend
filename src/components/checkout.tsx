@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleSummary } from "../store/slices/summary/summarySlice";
 
 
-export const Checkout = () => {
+export const OrderSummary = () => {
 
     const payment = useSelector((state: RootState) => state.payment);
     const product = useSelector((state: RootState) => state.product);
@@ -15,14 +15,14 @@ export const Checkout = () => {
     const dispatch = useDispatch();
 
     const payProduct = () => {
-        console.log(payment)
+        console.log({ payment, product });
     }
 
     return (
         <>
-            
+
             <Drawer placement="bottom" size="5xl" isOpen={showSummary} onOpenChange={
-                ()=>{
+                () => {
                     dispatch(toggleSummary());
                 }
             }
@@ -35,9 +35,7 @@ export const Checkout = () => {
                                 Summary payment
                             </DrawerHeader>
                             <DrawerBody>
-                                {
-                                    payment.creditCard
-                                }
+
                                 <CheckoutSummary product={product} />
                             </DrawerBody>
                             <DrawerFooter>
@@ -78,14 +76,13 @@ const CheckoutSummary = ({ product }: { product: Product }) => {
                     <p className="text-tiny uppercase font-bold">{product.name}</p>
                     <small className="text-default-500">{product.description}</small>
 
-                    <p className="text-lg font-semibold">Product price: {formatCurrency(product.price)}</p>
-                    <p className="text-lg font-semibold">Product amount: {product.quantity}</p>
                 </div>
                 <div className="flex flex-col items-center text-lg font-semibold">
 
+                    <p className="text-lg font-semibold">Product amount: {formatCurrency(product.price)}</p>
                     <p >Base fee: {formatCurrency(5)}</p>
                     <p >Delivery fee: {formatCurrency(2)}</p>
-                    <p >Total price: {formatCurrency(product.price * product.quantity + 5 + 2)}</p>
+                    <p >Total price: {formatCurrency(product.price + 5 + 2)}</p>
                 </div>
             </CardBody>
         </Card>

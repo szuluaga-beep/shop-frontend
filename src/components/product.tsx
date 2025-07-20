@@ -20,7 +20,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
                 <div className="flex items-center justify-between w-full mt-2">
 
                     <h4 className="font-bold text-large">$ {product.price}</h4>
-                    <span className="text-sm ">{product.quantity}</span>
+                    <span className="text-sm ">Availability units: {product.quantity}</span>
                 </div>
             </CardBody>
             <CardFooter className="flex justify-end">
