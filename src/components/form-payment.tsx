@@ -9,17 +9,17 @@ import { Package } from "lucide-react";
 import { months } from "../data/months";
 import { years } from "../data/years";
 import { Checkout } from "./checkout";
-import type { Product } from "../lib/interfaces/product";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "../store/store";
 import { setPaymentDetails } from "../store/slices/payment/paymentSlice";
+import { toggleSummary } from "../store/slices/summary/summarySlice";
 
-export const FormPayment = ({ product }: { product: Product }) => {
+export const FormPayment = () => {
 
   const [creditCardType, setCreditCardType] = useState<string>('');
   const [cardValue, setCardValue] = useState<string>('');
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(paymentSchema),
     defaultValues: {
       creditCard: '',
@@ -47,6 +47,7 @@ export const FormPayment = ({ product }: { product: Product }) => {
 
   const onSubmit = (data: Payment) => {
     dispatch(setPaymentDetails(data));
+    dispatch(toggleSummary());
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full justify-center items-center'>
@@ -177,7 +178,7 @@ export const FormPayment = ({ product }: { product: Product }) => {
 
 
 
-      <Checkout product={product} />
+      <Checkout />
 
 
 

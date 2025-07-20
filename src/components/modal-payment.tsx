@@ -2,16 +2,23 @@ import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDi
 import { CreditCard } from 'lucide-react';
 import { FormPayment } from './form-payment';
 import type { Product } from '../lib/interfaces/product';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../store/slices/product/productSlice';
 
 
 export const ModalPayment = ({ product }: { product: Product }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    const dispatch = useDispatch();
 
     return (
         <>
             <Button
-                onPress={onOpen}
+                onPress={() => {
+                    onOpen();
+                    dispatch(addProduct(product))
+
+                }}
                 color="primary"
                 size="sm"
                 radius="full"
@@ -28,7 +35,7 @@ export const ModalPayment = ({ product }: { product: Product }) => {
                                 Pay for product {product.name}
                             </ModalHeader>
                             <ModalBody>
-                                <FormPayment product={product} />
+                                <FormPayment />
 
                             </ModalBody>
                             <ModalFooter>

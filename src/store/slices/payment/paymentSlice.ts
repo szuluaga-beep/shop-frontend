@@ -1,16 +1,7 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
+import type { Payment } from "../../../lib/types/payment";
 
-export interface PaymentState {
-    creditCard: string;
-    cvc: string;
-    nameOfCard: string;
-    fullName: string;
-    deliveryInfo: string;
-    monthExpireAt: string;
-    yearExpireAt: string;
-}
-
-const initialState: PaymentState = {
+const initialState: Payment = {
     creditCard: '',
     cvc: '',
     nameOfCard: '',
@@ -24,7 +15,7 @@ export const paymentSlice = createSlice({
     name: "payment",
     initialState,
     reducers: {
-        setPaymentDetails: (state, action: PayloadAction<PaymentState>) => {
+        setPaymentDetails: (state, action: PayloadAction<Payment>) => {
             const { creditCard, cvc, nameOfCard, fullName, deliveryInfo, monthExpireAt, yearExpireAt } = action.payload;
             state.creditCard = creditCard;
             state.cvc = cvc;

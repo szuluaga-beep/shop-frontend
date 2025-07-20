@@ -1,15 +1,17 @@
-import { Button, Card, CardBody, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Image, useDisclosure } from "@heroui/react";
+import { Button, Card, CardBody, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Image } from "@heroui/react";
 import type { Product } from "../lib/interfaces/product";
 import { formatCurrency } from "../lib/utils";
 import type { RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPaymentDetails } from "../store/slices/payment/paymentSlice";
+import { toggleSummary } from "../store/slices/summary/summarySlice";
 
 
-export const Checkout = ({ product }: { product: Product }) => {
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
+export const Checkout = () => {
 
     const payment = useSelector((state: RootState) => state.payment);
+    const product = useSelector((state: RootState) => state.product);
+
+    const showSummary = useSelector((state: RootState) => state.summary.showSummary);
     const dispatch = useDispatch();
 
     const payProduct = () => {
@@ -18,8 +20,12 @@ export const Checkout = ({ product }: { product: Product }) => {
 
     return (
         <>
-            <Button onPress={onOpen}>Open Drawer</Button>
-            <Drawer placement="bottom" size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}
+            
+            <Drawer placement="bottom" size="5xl" isOpen={showSummary} onOpenChange={
+                ()=>{
+                    dispatch(toggleSummary());
+                }
+            }
 
             >
                 <DrawerContent>
@@ -40,8 +46,7 @@ export const Checkout = ({ product }: { product: Product }) => {
                                 </Button>
                                 <Button color="primary" onPress={() => {
                                     payProduct();
-                                    onClose();
-                                    dispatch(resetPaymentDetails());
+                                    // onClose();
                                 }}>
                                     Pay
                                 </Button>
