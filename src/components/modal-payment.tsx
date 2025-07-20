@@ -1,9 +1,12 @@
-import { Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
-import { CreditCard, Package } from 'lucide-react';
+import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
+import { CreditCard } from 'lucide-react';
+import { FormPayment } from './form-payment';
 
 
 export const ModalPayment = ({ productId }: { productId: number }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
+
+
     return (
         <>
             <Button
@@ -14,9 +17,9 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                 className="self-end font-semibold text-balance text-base"
             >
                 Pay with credit card
-                <CreditCard className='text-2xl pointer-events-none shrink-0'/>
+                <CreditCard className='text-2xl pointer-events-none shrink-0' />
             </Button>
-            <Modal isOpen={isOpen} backdrop='opaque' placement="center" onOpenChange={onOpenChange}>
+            <Modal isOpen={isOpen} backdrop='opaque' placement="center" onOpenChange={onOpenChange} size='2xl'>
                 <ModalContent>
                     {(onClose) => (
                         <>
@@ -24,34 +27,14 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                                 Pay for product #{productId}
                             </ModalHeader>
                             <ModalBody>
-                                <Input
-                                    endContent={
-                                        <CreditCard className="text-2xl text-default-400 pointer-events-none shrink-0" />
-                                    }
-                                    autoFocus
-                                    labelPlacement='outside'
-                                    label="Credit Card"
-                                    placeholder="1234 5678 9012 3456"
-                                    variant="bordered"
-                                />
-                                <Input
-                                    endContent={
-                                        <Package className="text-2xl text-default-400 pointer-events-none shrink-0" />
-                                    }
-                                    labelPlacement='outside'
-                                    label="Delivery information"
-                                    placeholder="Enter your address"
-                                    variant="bordered"
-                                />
-                                
+                                <FormPayment productId={productId} />
+
                             </ModalBody>
                             <ModalFooter>
                                 <Button color="danger" variant="flat" onPress={onClose}>
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={onClose}>
-                                    Checkout
-                                </Button>
+
                             </ModalFooter>
                         </>
                     )}
@@ -60,3 +43,4 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
         </>
     )
 }
+
