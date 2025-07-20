@@ -7,21 +7,7 @@ export const Checkout = () => {
         <>
             <Button onPress={onOpen}>Open Drawer</Button>
             <Drawer placement="bottom" size="5xl" isOpen={isOpen} onOpenChange={onOpenChange}
-                motionProps={{
-                    variants: {
-                        enter: {
-                            opacity: 1,
-                            x: 0,
-                            dur: 0.3,
-                            
-                        },
-                        exit: {
-                            x: 100,
-                            opacity: 0,
-                            dur: 0.3,
-                        },
-                    },
-                }}
+                
             >
                 <DrawerContent>
                     {(onClose) => (
