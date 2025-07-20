@@ -12,7 +12,7 @@ export const productSlice = createSlice({
             state.id = product.id;
             state.name = product.name;
             state.description = product.description;
-            state.image = product.image;
+            state.imageUrl = product.imageUrl;
             state.price = product.price;
             state.quantity = product.quantity;
         },
@@ -20,7 +20,7 @@ export const productSlice = createSlice({
             state.id = 0;
             state.name = '';
             state.description = '';
-            state.image = '';
+            state.imageUrl = '';
             state.price = 0;
             state.quantity = 0;
         }

@@ -8,4 +8,13 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  // server:{
+  //   proxy:{
+  //     "/imgur-proxy":{
+  //       target:"https://i.imgur.com",
+  //       changeOrigin: true,
+  //       rewrite: (path) => path.replace(/^\/imgur-proxy/, '')
+  //     }
+  //   }
+  // }
 })

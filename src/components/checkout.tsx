@@ -64,13 +64,15 @@ const CheckoutSummary = ({ product }: { product: Product }) => {
         <Card className="py-4">
 
             <CardBody className="overflow-visible py-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-items-center place-items-center">
+                <div>
 
-                <Image
-                    alt="Card background"
-                    className="object-cover rounded-xl"
-                    src={product.image}
-                    width={200}
-                />
+                    <Image
+                        alt="Card background"
+                        className="object-cover rounded-xl"
+                        src={product.imageUrl}
+                        width={200}
+                    />
+                </div>
                 <div className="flex flex-col items-center">
 
                     <p className="text-tiny uppercase font-bold">{product.name}</p>

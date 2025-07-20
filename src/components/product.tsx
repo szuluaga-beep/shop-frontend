@@ -12,7 +12,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
                 <Image
                     alt="Card background"
                     className="object-cover rounded-xl"
-                    src={product.image}
+                    src={product.imageUrl}
                     width={200}
                 />
                 <p className="text-tiny uppercase font-bold">{product.name}</p>
