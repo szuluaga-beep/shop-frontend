@@ -1,4 +1,4 @@
-import {  Card, CardBody, CardHeader, Image } from "@heroui/react"
+import { Card, CardBody, CardFooter, Image } from "@heroui/react"
 import { products } from "./data/products"
 import { ModalPayment } from "./components/modal-payment";
 
@@ -13,25 +13,31 @@ function App() {
         {
           products.map(product => (
             <Card className="py-4" key={product.id}>
-              <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
+              
+              <CardBody className="overflow-visible py-2 flex flex-col items-center gap-2">
 
-                <ModalPayment productId={product.id} />
-              </CardHeader>
-              <CardBody className="overflow-visible py-2">
-                <p className="text-tiny uppercase font-bold">{product.name}</p>
-                <small className="text-default-500">{product.description}</small>
-                <h4 className="font-bold text-large">$ {product.price}</h4>
                 <Image
                   alt="Card background"
                   className="object-cover rounded-xl"
                   src={product.image}
                   width={200}
                 />
+                <p className="text-tiny uppercase font-bold">{product.name}</p>
+                <small className="text-default-500">{product.description}</small>
+                <div className="flex items-center justify-between w-full mt-2">
+
+                  <h4 className="font-bold text-large">$ {product.price}</h4>
+                  <span className="text-sm ">{product.quantity}</span>
+                </div>
               </CardBody>
+              <CardFooter className="flex justify-end">
+                <ModalPayment productId={product.id} />
+
+              </CardFooter>
             </Card>
           ))
         }
-        
+
       </div>
     </>
   )

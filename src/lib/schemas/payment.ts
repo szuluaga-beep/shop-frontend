@@ -17,9 +17,21 @@ export const paymentSchema = z.object({
             message: 'Invalid credit card number format. Please enter a valid Visa or MasterCard number.'
         }),
 
-    expireAt: z.string().nonempty('Expiration date is required'),
+    monthExpireAt: z.string().min(1, 'Month is required').refine(val => {
+        const month = parseInt(val, 10);
+        return month >= 1 && month <= 12;
+    }, {
+        message: 'Invalid month. Please select a valid month.'
+    }),
+    yearExpireAt: z.string().min(1, 'Year is required').refine(val => {
+        const year = parseInt(val, 10);
+        return year >= new Date().getFullYear();
+    }, {
+        message: 'Invalid year. Please select a valid year.'
+    }),
     cvc: z.string()
         .length(3, 'CVC must be exactly 3 digits'),
     nameOfCard: z.string().min(1, 'Name on card is required'),
+    fullName: z.string().min(1, 'Customer full name is required'),
     deliveryInfo: z.string().min(1, 'Delivery information is required'),
 });
