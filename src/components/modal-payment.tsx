@@ -1,9 +1,10 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { CreditCard } from 'lucide-react';
 import { FormPayment } from './form-payment';
+import type { Product } from '../lib/interfaces/product';
 
 
-export const ModalPayment = ({ productId }: { productId: number }) => {
+export const ModalPayment = ({ product }: { product: Product }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
 
@@ -24,10 +25,10 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
-                                Pay for product #{productId}
+                                Pay for product {product.name}
                             </ModalHeader>
                             <ModalBody>
-                                <FormPayment productId={productId} />
+                                <FormPayment product={product} />
 
                             </ModalBody>
                             <ModalFooter>

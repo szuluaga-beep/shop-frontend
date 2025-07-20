@@ -8,3 +8,10 @@ export const formatCardNumber = (value: string) => {
     // Format the digits into groups of 4
     return digits.replace(/(.{4})/g, '$1 ').trim();
 }
+
+export const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat('en-US', {
+        style: 'currency',
+        currency: 'USD',
+    }).format(value);
+}

@@ -9,8 +9,12 @@ import { Package } from "lucide-react";
 import { months } from "../data/months";
 import { years } from "../data/years";
 import { Checkout } from "./checkout";
+import type { Product } from "../lib/interfaces/product";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../store/store";
+import { setPaymentDetails } from "../store/slices/payment/paymentSlice";
 
-export const FormPayment = ({ productId }: { productId: number }) => {
+export const FormPayment = ({ product }: { product: Product }) => {
 
   const [creditCardType, setCreditCardType] = useState<string>('');
   const [cardValue, setCardValue] = useState<string>('');
@@ -24,7 +28,10 @@ export const FormPayment = ({ productId }: { productId: number }) => {
       fullName: '',
       deliveryInfo: '',
     },
-  })
+  });
+
+  const payment = useSelector((state: RootState) => state.payment);
+  const dispatch = useDispatch();
 
   const handleCreditCardType = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -39,19 +46,13 @@ export const FormPayment = ({ productId }: { productId: number }) => {
   }
 
   const onSubmit = (data: Payment) => {
-    console.log({
-      productId,
-      creditCard: data.creditCard,
-      deliveryInfo: data.deliveryInfo,
-      monthExpireAt: data.monthExpireAt,
-      yearExpireAt: data.yearExpireAt,
-      cvc: data.cvc,
-      nameOfCard: data.nameOfCard,
-      fullName: data.fullName,
-    });
+    dispatch(setPaymentDetails(data));
   };
   return (
     <Form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-4 w-full justify-center items-center'>
+      {
+        payment.creditCard
+      }
 
       <Accordion variant="bordered" className="w-full" defaultExpandedKeys={["1"]}>
 
@@ -176,7 +177,7 @@ export const FormPayment = ({ productId }: { productId: number }) => {
 
 
 
-      <Checkout/>
+      <Checkout product={product} />
 
 
 
