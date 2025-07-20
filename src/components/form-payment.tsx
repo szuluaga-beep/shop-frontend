@@ -8,6 +8,7 @@ import { cleanCardNumber, formatCardNumber } from "../lib/utils";
 import { Package } from "lucide-react";
 import { months } from "../data/months";
 import { years } from "../data/years";
+import { Checkout } from "./checkout";
 
 export const FormPayment = ({ productId }: { productId: number }) => {
 
@@ -175,7 +176,7 @@ export const FormPayment = ({ productId }: { productId: number }) => {
 
 
 
-
+      <Checkout/>
 
 
 
