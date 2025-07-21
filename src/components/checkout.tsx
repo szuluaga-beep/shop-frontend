@@ -4,18 +4,19 @@ import { formatCurrency } from "../lib/utils";
 import type { RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSummary } from "../store/slices/summary/summarySlice";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPayment } from "../actions/payment";
 import type { PaymentWompi } from "../lib/interfaces/payment";
 
-
 export const OrderSummary = () => {
-
+    
     const payment = useSelector((state: RootState) => state.payment);
     const product = useSelector((state: RootState) => state.product);
-
+    
     const showSummary = useSelector((state: RootState) => state.summary.showSummary);
     const dispatch = useDispatch();
+
+    const queryClient = useQueryClient()
 
     const mutationPayment = useMutation({
         mutationFn: async (payment: PaymentWompi) => {
@@ -28,6 +29,9 @@ export const OrderSummary = () => {
                 color: "success"
             });
             dispatch(toggleSummary());
+            queryClient.invalidateQueries({ queryKey: ['products'] }); // Refresh products list if needed
+
+
             // Optionally, you can reset the payment state here
         },
         onError: (error: Error) => {
@@ -50,7 +54,7 @@ export const OrderSummary = () => {
             nameOnCard: payment.nameOfCard,
             productId: product.id,
             customerFullName: payment.fullName,
-            customerEmail: "steven@example.com",
+            customerEmail: payment.email,
         })
     }
 
@@ -75,7 +79,7 @@ export const OrderSummary = () => {
                                 <CheckoutSummary product={product} />
                             </DrawerBody>
                             <DrawerFooter>
-                                <Button disabled={mutationPayment.isPending} color="danger" variant="light" onPress={onClose}>
+                                <Button isDisabled={mutationPayment.isPending} color="danger" variant="light" onPress={onClose}>
                                     Close
                                 </Button>
                                 <Button isLoading={mutationPayment.isPending} color="primary" onPress={() => {

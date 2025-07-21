@@ -8,7 +8,8 @@ const initialState: Payment = {
     fullName: '',
     deliveryInfo: '',
     monthExpireAt: '',
-    yearExpireAt: ''
+    yearExpireAt: '',
+    email: ''
 }
 
 export const paymentSlice = createSlice({
@@ -16,7 +17,7 @@ export const paymentSlice = createSlice({
     initialState,
     reducers: {
         setPaymentDetails: (state, action: PayloadAction<Payment>) => {
-            const { creditCard, cvc, nameOfCard, fullName, deliveryInfo, monthExpireAt, yearExpireAt } = action.payload;
+            const { creditCard, cvc, nameOfCard, fullName, deliveryInfo, monthExpireAt, yearExpireAt, email } = action.payload;
             state.creditCard = creditCard;
             state.cvc = cvc;
             state.nameOfCard = nameOfCard;
@@ -24,6 +25,7 @@ export const paymentSlice = createSlice({
             state.deliveryInfo = deliveryInfo;
             state.monthExpireAt = monthExpireAt;
             state.yearExpireAt = yearExpireAt;
+            state.email = email;
         },
         resetPaymentDetails: (state) => {
             state.creditCard = '';

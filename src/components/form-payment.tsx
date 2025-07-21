@@ -45,6 +45,7 @@ export const FormPayment = () => {
 
 
       <fieldset className='w-full mb-2'>
+        <legend>Payment Information</legend>
 
         <div className='flex flex-col gap-4 w-full'>
           <Input
@@ -135,6 +136,9 @@ export const FormPayment = () => {
       </fieldset>
 
       <fieldset className='w-full'>
+        <legend >
+          Delivery Information
+        </legend>
 
 
         <div className='flex flex-col gap-4 w-full'>
@@ -146,6 +150,15 @@ export const FormPayment = () => {
             {...register('fullName')}
             errorMessage={errors.fullName?.message}
             isInvalid={!!errors.fullName}
+          />
+          <Input
+            type='email'
+            label="Customer Email"
+            placeholder="Enter your email"
+            variant="bordered"
+            {...register('email')}
+            errorMessage={errors.email?.message}
+            isInvalid={!!errors.email}
           />
           <Input
             endContent={
