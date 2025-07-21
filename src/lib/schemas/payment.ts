@@ -28,10 +28,11 @@ export const paymentSchema = z.object({
         return year >= new Date().getFullYear();
     }, {
         message: 'Invalid year. Please select a valid year.'
-    }),
+    }).transform(val => val.toString().slice(-2)), // Ensure only last two digits
     cvc: z.string()
         .length(3, 'CVC must be exactly 3 digits'),
     nameOfCard: z.string().min(1, 'Name on card is required'),
     fullName: z.string().min(1, 'Customer full name is required'),
+    email: z.email('Invalid email format'),
     deliveryInfo: z.string().min(1, 'Delivery information is required'),
 });

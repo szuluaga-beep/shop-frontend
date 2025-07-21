@@ -1,16 +1,24 @@
 import { Button, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure } from '@heroui/react';
 import { CreditCard } from 'lucide-react';
 import { FormPayment } from './form-payment';
+import type { Product } from '../lib/interfaces/product';
+import { useDispatch } from 'react-redux';
+import { addProduct } from '../store/slices/product/productSlice';
 
 
-export const ModalPayment = ({ productId }: { productId: number }) => {
+export const ModalPayment = ({ product }: { product: Product }) => {
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    const dispatch = useDispatch();
 
     return (
         <>
             <Button
-                onPress={onOpen}
+                onPress={() => {
+                    onOpen();
+                    dispatch(addProduct(product))
+
+                }}
                 color="primary"
                 size="sm"
                 radius="full"
@@ -24,10 +32,10 @@ export const ModalPayment = ({ productId }: { productId: number }) => {
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">
-                                Pay for product #{productId}
+                                Pay for product {product.name}
                             </ModalHeader>
                             <ModalBody>
-                                <FormPayment productId={productId} />
+                                <FormPayment onOpenChange={onOpenChange} />
 
                             </ModalBody>
                             <ModalFooter>

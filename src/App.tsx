@@ -1,40 +1,39 @@
-import { Card, CardBody, CardFooter, Image } from "@heroui/react"
-import { products } from "./data/products"
-import { ModalPayment } from "./components/modal-payment";
+
+
+import { useQuery } from "@tanstack/react-query";
+import { ProductCard } from "./components/product";
+import { getProducts } from "./actions/product";
+import { SkeletonCard } from "./components/skeleton";
 
 
 function App() {
+  const { data: products, isLoading, error } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+
+  });
+  if (isLoading) {
+
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
+        <SkeletonCard />
+        <SkeletonCard />
+        <SkeletonCard />
+      </div>
+    )
+  }
+  if (error) return <div>Error loading products</div>;
+
+  if (!products || products.length === 0) return <div>No products available</div>;
 
   return (
     <>
       <h1 className='text-4xl font-bold text-center'>Shop</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 p-4">
 
         {
           products.map(product => (
-            <Card className="py-4" key={product.id}>
-              
-              <CardBody className="overflow-visible py-2 flex flex-col items-center gap-2">
-
-                <Image
-                  alt="Card background"
-                  className="object-cover rounded-xl"
-                  src={product.image}
-                  width={200}
-                />
-                <p className="text-tiny uppercase font-bold">{product.name}</p>
-                <small className="text-default-500">{product.description}</small>
-                <div className="flex items-center justify-between w-full mt-2">
-
-                  <h4 className="font-bold text-large">$ {product.price}</h4>
-                  <span className="text-sm ">{product.quantity}</span>
-                </div>
-              </CardBody>
-              <CardFooter className="flex justify-end">
-                <ModalPayment productId={product.id} />
-
-              </CardFooter>
-            </Card>
+            <ProductCard key={product.id} product={product} />
           ))
         }
 
