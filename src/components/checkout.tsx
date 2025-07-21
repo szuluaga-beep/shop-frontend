@@ -1,9 +1,12 @@
-import { Button, Card, CardBody, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Image } from "@heroui/react";
+import { addToast, Button, Card, CardBody, Drawer, DrawerBody, DrawerContent, DrawerFooter, DrawerHeader, Image } from "@heroui/react";
 import type { Product } from "../lib/interfaces/product";
 import { formatCurrency } from "../lib/utils";
 import type { RootState } from "../store/store";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleSummary } from "../store/slices/summary/summarySlice";
+import { useMutation } from "@tanstack/react-query";
+import { createPayment } from "../actions/payment";
+import type { PaymentWompi } from "../lib/interfaces/payment";
 
 
 export const OrderSummary = () => {
@@ -14,14 +17,47 @@ export const OrderSummary = () => {
     const showSummary = useSelector((state: RootState) => state.summary.showSummary);
     const dispatch = useDispatch();
 
-    const payProduct = () => {
-        console.log({ payment, product });
+    const mutationPayment = useMutation({
+        mutationFn: async (payment: PaymentWompi) => {
+            return createPayment(payment);
+        },
+        onSuccess: (data) => {
+            addToast({
+                title: "Payment Successful",
+                description: `Your payment of ${formatCurrency(data.amount / 100)} has been processed successfully.`,
+                color: "success"
+            });
+            dispatch(toggleSummary());
+            // Optionally, you can reset the payment state here
+        },
+        onError: (error: Error) => {
+            addToast({
+                title: "Payment Failed",
+                description: error.message,
+                color: "danger"
+            });
+        }
+    })
+
+    const payProduct = async () => {
+        await mutationPayment.mutateAsync({
+            address: payment.deliveryInfo,
+            amountInCents: (parseFloat(product.price.toString()) + 5 + 2) * 100, // Convert to cents
+            creditCardNumber: payment.creditCard,
+            monthExpiration: payment.monthExpireAt,
+            yearExpiration: payment.yearExpireAt,
+            cvc: payment.cvc,
+            nameOnCard: payment.nameOfCard,
+            productId: product.id,
+            customerFullName: payment.fullName,
+            customerEmail: "steven@example.com",
+        })
     }
 
     return (
         <>
 
-            <Drawer placement="bottom" size="5xl" isOpen={showSummary} onOpenChange={
+            <Drawer isOpen={showSummary} onOpenChange={
                 () => {
                     dispatch(toggleSummary());
                 }
@@ -39,12 +75,12 @@ export const OrderSummary = () => {
                                 <CheckoutSummary product={product} />
                             </DrawerBody>
                             <DrawerFooter>
-                                <Button color="danger" variant="light" onPress={onClose}>
+                                <Button disabled={mutationPayment.isPending} color="danger" variant="light" onPress={onClose}>
                                     Close
                                 </Button>
-                                <Button color="primary" onPress={() => {
+                                <Button isLoading={mutationPayment.isPending} color="primary" onPress={() => {
                                     payProduct();
-                                    // onClose();
+
                                 }}>
                                     Pay
                                 </Button>
@@ -84,7 +120,7 @@ const CheckoutSummary = ({ product }: { product: Product }) => {
                     <p className="text-lg font-semibold">Product amount: {formatCurrency(product.price)}</p>
                     <p >Base fee: {formatCurrency(5)}</p>
                     <p >Delivery fee: {formatCurrency(2)}</p>
-                    <p >Total price: {formatCurrency(product.price + 5 + 2)}</p>
+                    <p >Total price: {formatCurrency(parseFloat(product.price.toString()) + 5 + 2)}</p>
                 </div>
             </CardBody>
         </Card>

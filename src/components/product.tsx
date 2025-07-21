@@ -2,6 +2,7 @@
 import { Card, CardBody, CardFooter, Image } from '@heroui/react'
 import type { Product } from '../lib/interfaces/product'
 import { ModalPayment } from './modal-payment'
+import { formatCurrency } from '../lib/utils'
 
 export const ProductCard = ({ product }: { product: Product }) => {
     return (
@@ -19,7 +20,7 @@ export const ProductCard = ({ product }: { product: Product }) => {
                 <small className="text-default-500">{product.description}</small>
                 <div className="flex items-center justify-between w-full mt-2">
 
-                    <h4 className="font-bold text-large">$ {product.price}</h4>
+                    <h4 className="font-bold text-large">{formatCurrency(product.price)}</h4>
                     <span className="text-sm ">Availability units: {product.quantity}</span>
                 </div>
             </CardBody>
