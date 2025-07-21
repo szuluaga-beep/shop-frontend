@@ -8,7 +8,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createPayment } from "../actions/payment";
 import type { PaymentWompi } from "../lib/interfaces/payment";
 
-export const OrderSummary = () => {
+export const OrderSummary = ({ onOpenChange }: { onOpenChange: () => void }) => {
 
     const payment = useSelector((state: RootState) => state.payment);
     const product = useSelector((state: RootState) => state.product);
@@ -28,9 +28,9 @@ export const OrderSummary = () => {
                 description: `Your payment of ${formatCurrency(data.amount / 100)} has been processed successfully.`,
                 color: "success"
             });
+            onOpenChange(); // Close modal payment
             dispatch(toggleSummary());
             queryClient.invalidateQueries({ queryKey: ['products'] }); // Refresh products list if needed
-
 
             // Optionally, you can reset the payment state here
         },

@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { setPaymentDetails } from "../store/slices/payment/paymentSlice";
 import { toggleSummary } from "../store/slices/summary/summarySlice";
 
-export const FormPayment = () => {
+export const FormPayment = ({ onOpenChange }: { onOpenChange: () => void }) => {
 
   const [creditCardType, setCreditCardType] = useState<string>('');
   const [cardValue, setCardValue] = useState<string>('');
@@ -174,7 +174,7 @@ export const FormPayment = () => {
         </div>
       </fieldset>
 
-      <OrderSummary />
+      <OrderSummary onOpenChange={onOpenChange} />
 
       <Button type='submit' color="primary">
         Checkout

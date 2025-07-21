@@ -35,7 +35,7 @@ export const ModalPayment = ({ product }: { product: Product }) => {
                                 Pay for product {product.name}
                             </ModalHeader>
                             <ModalBody>
-                                <FormPayment />
+                                <FormPayment onOpenChange={onOpenChange} />
 
                             </ModalBody>
                             <ModalFooter>
