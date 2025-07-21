@@ -9,10 +9,10 @@ import { createPayment } from "../actions/payment";
 import type { PaymentWompi } from "../lib/interfaces/payment";
 
 export const OrderSummary = () => {
-    
+
     const payment = useSelector((state: RootState) => state.payment);
     const product = useSelector((state: RootState) => state.product);
-    
+
     const showSummary = useSelector((state: RootState) => state.summary.showSummary);
     const dispatch = useDispatch();
 
@@ -103,7 +103,7 @@ const CheckoutSummary = ({ product }: { product: Product }) => {
     return (
         <Card className="py-4">
 
-            <CardBody className="overflow-visible py-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 justify-items-center place-items-center">
+            <CardBody className="overflow-visible py-2 grid grid-cols-1 md:grid-cols-2 gap-4 justify-items-center place-items-center">
                 <div>
 
                     <Image
@@ -113,18 +113,15 @@ const CheckoutSummary = ({ product }: { product: Product }) => {
                         width={200}
                     />
                 </div>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center gap-1 justify-center">
 
                     <p className="text-tiny uppercase font-bold">{product.name}</p>
                     <small className="text-default-500">{product.description}</small>
 
-                </div>
-                <div className="flex flex-col items-center text-lg font-semibold">
-
                     <p className="text-lg font-semibold">Product amount: {formatCurrency(product.price)}</p>
-                    <p >Base fee: {formatCurrency(5)}</p>
-                    <p >Delivery fee: {formatCurrency(2)}</p>
-                    <p >Total price: {formatCurrency(parseFloat(product.price.toString()) + 5 + 2)}</p>
+                    <p className="text-default-500">Base fee: {formatCurrency(5)}</p>
+                    <p className="text-default-500">Delivery fee: {formatCurrency(2)}</p>
+                    <p className="text-default-500">Total price: {formatCurrency(parseFloat(product.price.toString()) + 5 + 2)}</p>
                 </div>
             </CardBody>
         </Card>
